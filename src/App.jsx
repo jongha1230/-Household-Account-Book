@@ -1,9 +1,54 @@
-import { RouterProvider } from "react-router-dom";
+// import { RouterProvider } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import router from "./assets/router/router";
+import GlobalStyle from "./GlobalStyle";
+import ExpenseDetail from "./assets/pages/ExpenseDetail";
+import Homepage from "./assets/pages/Homepage";
+import fetchData from "./fetchData";
+// import router from "./assets/routes/router";
 
 function App() {
-  return <RouterProvider router={router} />;
+  const [fetchedData, setFetchedData] = useState([]);
+  console.log("fetchedData: ".fetchedData);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const fetchedData = await fetchData();
+      const localData = JSON.parse(localStorage.getItem("dataItem")) || [];
+      const combinedData = [
+        ...fetchedData.filter(
+          (item) => !localData.some((localItem) => localItem.id === item.id)
+        ),
+        ...localData,
+      ];
+      setFetchedData(combinedData);
+      localStorage.setItem("dataItem", JSON.stringify(combinedData));
+    };
+    loadData();
+  }, []);
+
+  const addExpense = (newExpense) => {
+    const updatedData = [...fetchedData, newExpense];
+    localStorage.setItem("dataItem", JSON.stringify(updatedData));
+    setFetchedData((prevData) => [...prevData, newExpense]);
+  };
+
+  return (
+    <>
+      <GlobalStyle />
+      {/* <RouterProvider router={router} /> */}
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={<Homepage data={fetchedData} addExpense={addExpense} />}
+          />
+          <Route path="/expenses/:itemId" element={<ExpenseDetail />} />
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
 }
 
 export default App;
