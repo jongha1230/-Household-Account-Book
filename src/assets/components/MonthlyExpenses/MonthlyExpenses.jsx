@@ -30,7 +30,6 @@ const StrBtn = styled.button`
 `;
 
 function MonthlyExpenses({ setFilterMonth }) {
-  console.log("월별 컴포넌트 리렌더링");
   const [activeMonth, setActiveMonth] = useState(null);
 
   useEffect(() => {
@@ -71,7 +70,7 @@ function MonthlyExpenses({ setFilterMonth }) {
       {months.map((month, index) => (
         <StrBtn
           key={index}
-          active={activeMonth === index}
+          active={activeMonth === index ? "true" : undefined}
           onClick={() => handleMonthClick(index)}
         >
           {month}

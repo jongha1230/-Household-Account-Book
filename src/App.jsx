@@ -3,15 +3,14 @@ import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import GlobalStyle from "./GlobalStyle";
-import ExpenseDetail from "./assets/pages/ExpenseDetail";
+import { ExpenseDetailWrapper } from "./assets/pages/ExpenseDetail";
 import Homepage from "./assets/pages/Homepage";
 import fetchData from "./fetchData";
 // import router from "./assets/routes/router";
 
 function App() {
   const [fetchedData, setFetchedData] = useState([]);
-  console.log("fetchedData: ".fetchedData);
-
+  console.log(fetchedData);
   useEffect(() => {
     const loadData = async () => {
       const fetchedData = await fetchData();
@@ -31,7 +30,23 @@ function App() {
   const addExpense = (newExpense) => {
     const updatedData = [...fetchedData, newExpense];
     localStorage.setItem("dataItem", JSON.stringify(updatedData));
-    setFetchedData((prevData) => [...prevData, newExpense]);
+    setFetchedData((fetchedData) => [...fetchedData, newExpense]);
+  };
+
+  const updateExpense = (targetExpense, modifiedExpense) => {
+    const updatedData = fetchedData.map((expense) =>
+      expense.id === targetExpense.id ? modifiedExpense : expense
+    );
+    localStorage.setItem("dataItem", JSON.stringify(updatedData));
+    setFetchedData(updatedData);
+  };
+
+  const removeExpense = (targetExpense) => {
+    const updatedData = fetchedData.filter(
+      (expense) => expense.id !== targetExpense.id
+    );
+    localStorage.setItem("dataItem", JSON.stringify(updatedData));
+    setFetchedData(updatedData);
   };
 
   return (
@@ -44,7 +59,16 @@ function App() {
             path="/"
             element={<Homepage data={fetchedData} addExpense={addExpense} />}
           />
-          <Route path="/expenses/:itemId" element={<ExpenseDetail />} />
+          <Route
+            path="/expenses/:itemId"
+            element={
+              <ExpenseDetailWrapper
+                data={fetchedData}
+                updateExpense={updateExpense}
+                removeExpense={removeExpense}
+              />
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>

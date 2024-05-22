@@ -4,6 +4,12 @@ const GlobalStyle = createGlobalStyle`
   body {
     background-color: #2ec4b6;
   }
+
+  a {
+    color: black;
+    text-decoration-line: none;
+  }
+
   .main-container {
     max-width: 800px;
     width: 100%;

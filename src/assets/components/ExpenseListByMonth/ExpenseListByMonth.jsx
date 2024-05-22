@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const StrDiv = styled.div`
@@ -44,7 +45,6 @@ const StrDateItemText = styled.span`
 `;
 
 function ExpenseListByMonth({ data, filterMonth }) {
-  console.log(data);
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
@@ -55,18 +55,23 @@ function ExpenseListByMonth({ data, filterMonth }) {
     setFilteredData(filtered);
   }, [data, filterMonth]);
 
+  const formattedAmount = (amount) =>
+    new Intl.NumberFormat("ko-KR").format(amount);
+
   return (
     <StrDiv>
-      {filteredData.map((item) => (
-        <StrItemWrapDiv key={item.id}>
-          <StrDateItemWrapDiv>
-            <span>{item.date}</span>
-            <StrDateItemText>
-              {item.item} - {item.description}
-            </StrDateItemText>
-          </StrDateItemWrapDiv>
-          <span>{item.amount} 원</span>
-        </StrItemWrapDiv>
+      {filteredData.map((expense) => (
+        <Link key={expense.id} to={`/expenses/${expense.id}`}>
+          <StrItemWrapDiv>
+            <StrDateItemWrapDiv>
+              <span>{expense.date}</span>
+              <StrDateItemText>
+                {expense.item} - {expense.description}
+              </StrDateItemText>
+            </StrDateItemWrapDiv>
+            <span>{formattedAmount(expense.amount)}원</span>
+          </StrItemWrapDiv>
+        </Link>
       ))}
     </StrDiv>
   );

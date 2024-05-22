@@ -1,17 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
-import { validateDate } from "./dateValidator";
+import DateValidator from "../DateValidator";
 
 function ExpenseForm({ addExpense }) {
-  console.log("폼 컴포넌트 리렌더링");
   const [date, setDate] = useState("");
   const [item, setItem] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const dateInputRef = useRef(null);
 
-  const onSubmitHandler = (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
     // 유효성 검사
     if (!date || !item || !amount || !description) {
@@ -19,7 +18,7 @@ function ExpenseForm({ addExpense }) {
       return;
     }
     // 날짜 유효성 검사
-    const dateValidationError = validateDate(date);
+    const dateValidationError = DateValidator(date);
     if (dateValidationError) {
       alert(dateValidationError);
       return;
@@ -48,7 +47,7 @@ function ExpenseForm({ addExpense }) {
   }, [date]);
 
   return (
-    <StrForm onSubmit={onSubmitHandler}>
+    <StrForm onSubmit={handleFormSubmit}>
       <StrDiv>
         <label htmlFor="date">날짜</label>
         <StrInput
