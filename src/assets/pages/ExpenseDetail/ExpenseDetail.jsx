@@ -1,10 +1,11 @@
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import {
   removeExpense,
   updateExpense,
-} from "../../../redux/slices/config/slices/fetchedDataSlice";
+} from "../../../redux/slices/fetchedDataSlice";
 import DateValidator from "../../components/DateValidator";
 import { StrForm } from "./ExpenseDetail.styled";
 

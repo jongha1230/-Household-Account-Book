@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { loadFetchedData } from "../../../redux/slices/config/slices/fetchedDataSlice";
+import { loadFetchedData } from "../../../redux/slices/fetchedDataSlice";
 import {
   StrDateItemWrapDiv,
   StrDiv,

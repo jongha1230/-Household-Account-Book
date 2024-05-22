@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import { addExpense } from "../../../redux/slices/config/slices/fetchedDataSlice";
+import { addExpense } from "../../../redux/slices/fetchedDataSlice";
 import DateValidator from "../DateValidator";
 import { StrForm } from "./ExpenseForm.styled";
 
