@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { ExpenseContext } from "../../../App";
 
 const StrDiv = styled.div`
   display: flex;
@@ -44,16 +45,16 @@ const StrDateItemText = styled.span`
   overflow: hidden;
 `;
 
-function ExpenseListByMonth({ data, filterMonth }) {
+function ExpenseListByMonth({ filterMonth }) {
   const [filteredData, setFilteredData] = useState([]);
-
+  const { fetchedData } = useContext(ExpenseContext);
   useEffect(() => {
-    const filtered = data.filter((item) => {
+    const filtered = fetchedData.filter((item) => {
       const month = new Date(item.date).getMonth();
       return month === filterMonth;
     });
     setFilteredData(filtered);
-  }, [data, filterMonth]);
+  }, [fetchedData, filterMonth]);
 
   const formattedAmount = (amount) =>
     new Intl.NumberFormat("ko-KR").format(amount);

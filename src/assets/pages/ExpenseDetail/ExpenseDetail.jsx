@@ -1,6 +1,7 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { ExpenseContext } from "../../../App";
 import DateValidator from "../../components/DateValidator";
 
 const StrForm = styled.form`
@@ -58,12 +59,13 @@ const StrBtn = styled.button`
   }
 `;
 
-function ExpenseDetail({ expense, updateExpense, removeExpense }) {
+function ExpenseDetail({ expense }) {
   const dateRef = useRef(null);
   const itemRef = useRef(null);
   const amountRef = useRef(null);
   const descriptionRef = useRef(null);
   const navigate = useNavigate();
+  const { updateExpense, removeExpense } = useContext(ExpenseContext);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();

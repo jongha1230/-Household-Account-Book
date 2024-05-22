@@ -16,18 +16,18 @@ const StrSection = styled.section`
   padding: 20px;
 `;
 
-function Homepage({ data, addExpense }) {
+function Homepage() {
   const [filterMonth, setFilterMonth] = useState("");
   return (
     <StrMain className="main-container">
       <StrSection>
-        <ExpenseForm addExpense={addExpense} />
+        <ExpenseForm />
       </StrSection>
       <StrSection>
         <MonthlyExpenses setFilterMonth={setFilterMonth} />
       </StrSection>
       <StrSection>
-        <ExpenseListByMonth data={data} filterMonth={filterMonth} />
+        <ExpenseListByMonth filterMonth={filterMonth} />
       </StrSection>
     </StrMain>
   );

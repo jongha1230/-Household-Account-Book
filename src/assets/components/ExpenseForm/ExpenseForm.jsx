@@ -1,14 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+
+import { ExpenseContext } from "../../../App";
 import DateValidator from "../DateValidator";
 
-function ExpenseForm({ addExpense }) {
+function ExpenseForm() {
   const [date, setDate] = useState("");
   const [item, setItem] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const dateInputRef = useRef(null);
+
+  const { addExpense } = useContext(ExpenseContext);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();

@@ -1,12 +1,11 @@
-// import { RouterProvider } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { createContext, useEffect, useState } from "react";
+import { RouterProvider } from "react-router-dom";
 import "./App.css";
 import GlobalStyle from "./GlobalStyle";
-import { ExpenseDetailWrapper } from "./assets/pages/ExpenseDetail";
-import Homepage from "./assets/pages/Homepage";
+import router from "./assets/routes/router.jsx";
 import fetchData from "./fetchData";
-// import router from "./assets/routes/router";
+
+export const ExpenseContext = createContext();
 
 function App() {
   const [fetchedData, setFetchedData] = useState([]);
@@ -52,25 +51,11 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      {/* <RouterProvider router={router} /> */}
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={<Homepage data={fetchedData} addExpense={addExpense} />}
-          />
-          <Route
-            path="/expenses/:itemId"
-            element={
-              <ExpenseDetailWrapper
-                data={fetchedData}
-                updateExpense={updateExpense}
-                removeExpense={removeExpense}
-              />
-            }
-          />
-        </Routes>
-      </BrowserRouter>
+      <ExpenseContext.Provider
+        value={{ fetchedData, addExpense, updateExpense, removeExpense }}
+      >
+        <RouterProvider router={router} />
+      </ExpenseContext.Provider>
     </>
   );
 }
