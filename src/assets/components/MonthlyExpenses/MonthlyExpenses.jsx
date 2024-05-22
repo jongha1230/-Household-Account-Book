@@ -1,33 +1,5 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-
-const StrDiv = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-`;
-
-const StrBtn = styled.button`
-  text-align: center;
-  font-size: 20px;
-  display: flex;
-  height: 60px;
-  padding: 20px;
-  width: 100px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
-  background-color: ${({ active }) => (active ? "#2EC4B6" : "#ebebeb")};
-  color: ${({ active }) => (active ? "white" : "black")};
-
-  &:hover {
-    background-color: #2ec4b6;
-    color: white;
-  }
-`;
+import { StrBtn, StrDiv } from "./MonthlyExpenses.styled";
 
 function MonthlyExpenses({ setFilterMonth }) {
   const [activeMonth, setActiveMonth] = useState(null);
@@ -70,7 +42,7 @@ function MonthlyExpenses({ setFilterMonth }) {
       {months.map((month, index) => (
         <StrBtn
           key={index}
-          active={activeMonth === index ? "true" : undefined}
+          $active={activeMonth === index}
           onClick={() => handleMonthClick(index)}
         >
           {month}

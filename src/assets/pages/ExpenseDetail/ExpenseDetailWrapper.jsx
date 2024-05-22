@@ -1,11 +1,10 @@
-import { useContext } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { ExpenseContext } from "../../../App";
 import ExpenseDetail from "./ExpenseDetail";
 
 function ExpenseDetailWrapper() {
-  const { fetchedData } = useContext(ExpenseContext);
   const { itemId } = useParams();
+  const fetchedData = useSelector((state) => state.fetchedData);
   const expense = fetchedData.find((item) => item.id === itemId);
   console.log(expense);
 

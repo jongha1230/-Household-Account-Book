@@ -1,63 +1,12 @@
-import { useContext, useRef } from "react";
+import { useRef } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { ExpenseContext } from "../../../App";
+import {
+  removeExpense,
+  updateExpense,
+} from "../../../redux/config/slices/fetchedDataSlice";
 import DateValidator from "../../components/DateValidator";
-
-const StrForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-`;
-
-const StrInput = styled.input`
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  margin: 10px 0px 20px 0px;
-`;
-
-const StrBtnWrapDiv = styled.div`
-  display: flex;
-  gap: 10px;
-`;
-
-const StrBtn = styled.button`
-  color: white;
-  padding: 12px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
-
-  &.edit-btn {
-    background-color: rgba(51, 102, 255, 1);
-  }
-
-  &.edit-btn:hover {
-    background-color: rgb(43, 90, 179);
-  }
-
-  &.delete-btn {
-    background-color: rgba(255, 51, 102, 1);
-  }
-
-  &.delete-btn:hover {
-    background-color: rgba(255, 0, 51, 1);
-  }
-
-  &.back-btn {
-    background-color: rgba(128, 128, 128, 0.8);
-  }
-
-  &.back-btn:hover {
-    background-color: rgba(80, 80, 80, 0.8);
-  }
-`;
+import { StrForm } from "./ExpenseDetail.styled";
 
 function ExpenseDetail({ expense }) {
   const dateRef = useRef(null);
@@ -65,7 +14,7 @@ function ExpenseDetail({ expense }) {
   const amountRef = useRef(null);
   const descriptionRef = useRef(null);
   const navigate = useNavigate();
-  const { updateExpense, removeExpense } = useContext(ExpenseContext);
+  const dispatch = useDispatch();
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -98,8 +47,7 @@ function ExpenseDetail({ expense }) {
       amount: modifiedAmount,
       description: modifiedDescription,
     };
-    updateExpense(expense, modifiedExpense);
-
+    dispatch(updateExpense(modifiedExpense));
     navigate("/");
   };
   const handleDelete = () => {
@@ -107,7 +55,7 @@ function ExpenseDetail({ expense }) {
       "정말로 이 지출 항목을삭제하시겠습니까?"
     );
     if (isConfirmed) {
-      removeExpense(expense);
+      dispatch(removeExpense(expense));
       navigate("/");
     }
   };
@@ -119,7 +67,7 @@ function ExpenseDetail({ expense }) {
     <div className="main-container">
       <StrForm onSubmit={handleFormSubmit}>
         <label htmlFor="date">날짜</label>
-        <StrInput
+        <input
           type="text"
           id="date"
           name="date"
@@ -128,7 +76,7 @@ function ExpenseDetail({ expense }) {
           ref={dateRef}
         />
         <label htmlFor="item">항목</label>
-        <StrInput
+        <input
           type="text"
           id="item"
           name="item"
@@ -137,7 +85,7 @@ function ExpenseDetail({ expense }) {
           ref={itemRef}
         />
         <label htmlFor="amount">금액</label>
-        <StrInput
+        <input
           type="number"
           id="amount"
           name="amount"
@@ -146,7 +94,7 @@ function ExpenseDetail({ expense }) {
           ref={amountRef}
         />
         <label htmlFor="item">내용</label>
-        <StrInput
+        <input
           type="text"
           id="description"
           name="description"
@@ -154,17 +102,17 @@ function ExpenseDetail({ expense }) {
           placeholder="지출 내용"
           ref={descriptionRef}
         />
-        <StrBtnWrapDiv>
-          <StrBtn type="submit" className="edit-btn">
+        <div>
+          <button type="submit" className="edit-btn">
             수정
-          </StrBtn>
-          <StrBtn type="button" className="delete-btn" onClick={handleDelete}>
+          </button>
+          <button type="button" className="delete-btn" onClick={handleDelete}>
             삭제
-          </StrBtn>
-          <StrBtn type="button" className="back-btn" onClick={handleGoBack}>
+          </button>
+          <button type="button" className="back-btn" onClick={handleGoBack}>
             뒤로가기
-          </StrBtn>
-        </StrBtnWrapDiv>
+          </button>
+        </div>
       </StrForm>
     </div>
   );

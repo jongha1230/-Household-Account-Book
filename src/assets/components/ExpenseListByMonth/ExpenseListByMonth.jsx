@@ -1,53 +1,22 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { ExpenseContext } from "../../../App";
-
-const StrDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const StrItemWrapDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  transition: transform 0.3s ease;
-
-  span:last-child {
-    font-weight: bold;
-    color: rgb(0, 123, 255);
-    flex-shrink: 0;
-  }
-
-  &:hover {
-    transform: scale(1.03);
-  }
-`;
-
-const StrDateItemWrapDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  flex-grow: 1;
-  overflow: hidden;
-`;
-
-const StrDateItemText = styled.span`
-  text-overflow: ellipsis;
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-`;
+import { loadFetchedData } from "../../../redux/config/slices/fetchedDataSlice";
+import {
+  StrDateItemWrapDiv,
+  StrDiv,
+  StrItemWrapDiv,
+} from "./ExpenseListByMonth.styled";
 
 function ExpenseListByMonth({ filterMonth }) {
+  const dispatch = useDispatch();
+  const fetchedData = useSelector((state) => state.fetchedData);
   const [filteredData, setFilteredData] = useState([]);
-  const { fetchedData } = useContext(ExpenseContext);
+
+  useEffect(() => {
+    dispatch(loadFetchedData());
+  }, [dispatch]);
+
   useEffect(() => {
     const filtered = fetchedData.filter((item) => {
       const month = new Date(item.date).getMonth();
@@ -66,9 +35,9 @@ function ExpenseListByMonth({ filterMonth }) {
           <StrItemWrapDiv>
             <StrDateItemWrapDiv>
               <span>{expense.date}</span>
-              <StrDateItemText>
+              <span>
                 {expense.item} - {expense.description}
-              </StrDateItemText>
+              </span>
             </StrDateItemWrapDiv>
             <span>{formattedAmount(expense.amount)}원</span>
           </StrItemWrapDiv>

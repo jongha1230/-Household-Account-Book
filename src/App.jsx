@@ -1,11 +1,9 @@
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { RouterProvider } from "react-router-dom";
 import "./App.css";
 import GlobalStyle from "./GlobalStyle";
 import router from "./assets/routes/router.jsx";
 import fetchData from "./fetchData";
-
-export const ExpenseContext = createContext();
 
 function App() {
   const [fetchedData, setFetchedData] = useState([]);
@@ -51,11 +49,8 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <ExpenseContext.Provider
-        value={{ fetchedData, addExpense, updateExpense, removeExpense }}
-      >
-        <RouterProvider router={router} />
-      </ExpenseContext.Provider>
+
+      <RouterProvider router={router} />
     </>
   );
 }

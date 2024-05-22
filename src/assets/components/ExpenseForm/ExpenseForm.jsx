@@ -1,21 +1,33 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-
-import { ExpenseContext } from "../../../App";
+import { addExpense } from "../../../redux/config/slices/fetchedDataSlice";
 import DateValidator from "../DateValidator";
+import { StrForm } from "./ExpenseForm.styled";
 
 function ExpenseForm() {
-  const [date, setDate] = useState("");
-  const [item, setItem] = useState("");
-  const [amount, setAmount] = useState("");
-  const [description, setDescription] = useState("");
-  const dateInputRef = useRef(null);
+  const [expense, setExpense] = useState({
+    date: "",
+    item: "",
+    amount: "",
+    description: "",
+  });
 
-  const { addExpense } = useContext(ExpenseContext);
+  const dateInputRef = useRef(null);
+  const dispatch = useDispatch();
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setExpense((prevExpense) => ({
+      ...prevExpense,
+      [name]: value,
+    }));
+  };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
+    const { date, item, amount, description } = expense;
+
     // 유효성 검사
     if (!date || !item || !amount || !description) {
       alert("입력창을 모두 작성해주세요.");
@@ -36,111 +48,76 @@ function ExpenseForm() {
       description,
     };
 
-    addExpense(newExpense);
+    dispatch(addExpense(newExpense));
 
-    setDate("");
-    setItem("");
-    setAmount("");
-    setDescription("");
+    setExpense({
+      date: "",
+      item: "",
+      amount: "",
+      description: "",
+    });
   };
 
   useEffect(() => {
-    if (date === "") {
+    if (expense.date === "") {
       dateInputRef.current.focus();
     }
-  }, [date]);
+  }, [expense.date]);
 
   return (
     <StrForm onSubmit={handleFormSubmit}>
-      <StrDiv>
+      <div>
         <label htmlFor="date">날짜</label>
-        <StrInput
+        <input
           ref={dateInputRef}
           type="text"
           id="date"
           name="date"
           placeholder="YYYY-MM-DD"
-          value={date}
-          onChange={(event) => setDate(event.target.value)}
+          value={expense.date}
+          onChange={handleInputChange}
         />
-      </StrDiv>
+      </div>
 
-      <StrDiv>
+      <div>
         <label htmlFor="item">항목</label>
-        <StrInput
+        <input
           type="text"
           id="item"
           name="item"
           placeholder="지출 항목"
-          value={item}
-          onChange={(event) => setItem(event.target.value)}
+          value={expense.item}
+          onChange={handleInputChange}
         />
-      </StrDiv>
+      </div>
 
-      <StrDiv>
+      <div>
         <label htmlFor="amount">금액</label>
-        <StrInput
+        <input
           type="number"
           id="amount"
           name="amount"
           placeholder="0"
-          value={amount}
-          onChange={(event) => setAmount(event.target.value)}
+          value={expense.amount}
+          onChange={handleInputChange}
         />
-      </StrDiv>
+      </div>
 
-      <StrDiv>
+      <div>
         <label htmlFor="description">내용</label>
-        <StrInput
+        <input
           type="text"
           id="description"
           name="description"
           placeholder="지출 내용"
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
+          value={expense.description}
+          onChange={handleInputChange}
         />
-      </StrDiv>
+      </div>
 
-      <StrBtn type="submit">저장</StrBtn>
+      <button type="submit">저장</button>
     </StrForm>
   );
 }
-
-const StrForm = styled.form`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: flex-end;
-`;
-
-const StrDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 0%;
-  min-width: 120px;
-`;
-
-const StrInput = styled.input`
-  padding: 8px;
-  border: 1px solid #ccc;
-  margin-top: 5px;
-  border-radius: 8px;
-`;
-
-const StrBtn = styled.button`
-  color: white;
-  padding: 8px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 10px;
-  background-color: rgba(51, 102, 255, 1);
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: rgb(43, 90, 179);
-  }
-`;
 
 export default ExpenseForm;
