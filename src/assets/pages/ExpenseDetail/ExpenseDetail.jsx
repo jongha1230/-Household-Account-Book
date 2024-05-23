@@ -1,12 +1,11 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import {
-  removeExpense,
-  updateExpense,
-} from "../../../redux/slices/fetchedDataSlice";
-import DateValidator from "../../components/DateValidator";
+import ConfirmModal from "@components/ConfirmModal";
+import DateValidator from "@components/DateValidator";
+import { AlertModal } from "@components/Modal";
+import { removeExpense, updateExpense } from "@redux/slices/fetchedDataSlice";
 import { StrForm } from "./ExpenseDetail.styled";
 
 function ExpenseDetail({ expense }) {
@@ -14,8 +13,12 @@ function ExpenseDetail({ expense }) {
   const itemRef = useRef(null);
   const amountRef = useRef(null);
   const descriptionRef = useRef(null);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -31,13 +34,15 @@ function ExpenseDetail({ expense }) {
       !modifiedAmount ||
       !modifiedDescription
     ) {
-      alert("수정할 내용을 모두 작성해주세요.");
+      setAlertMessage("수정할 내용을 모두 작성해주세요.");
+      setIsAlertModalOpen(true);
       return;
     }
 
     const dateValidationError = DateValidator(modifiedDate);
     if (dateValidationError) {
-      alert(dateValidationError);
+      setAlertMessage(dateValidationError);
+      setIsAlertModalOpen(true);
       return;
     }
 
@@ -51,15 +56,24 @@ function ExpenseDetail({ expense }) {
     dispatch(updateExpense(modifiedExpense));
     navigate("/");
   };
+
   const handleDelete = () => {
-    const isConfirmed = window.confirm(
-      "정말로 이 지출 항목을삭제하시겠습니까?"
-    );
-    if (isConfirmed) {
-      dispatch(removeExpense(expense));
-      navigate("/");
-    }
+    setIsConfirmModalOpen(true);
   };
+
+  const handleConfirmDelete = () => {
+    dispatch(removeExpense(expense));
+    navigate("/");
+  };
+
+  const handleCloseConfirmModal = () => {
+    setIsConfirmModalOpen(false);
+  };
+
+  const handleCloseAlertModal = () => {
+    setIsAlertModalOpen(false);
+  };
+
   const handleGoBack = () => {
     navigate(-1);
   };
@@ -115,6 +129,16 @@ function ExpenseDetail({ expense }) {
           </button>
         </div>
       </StrForm>
+      <ConfirmModal
+        isOpen={isConfirmModalOpen}
+        onClose={handleCloseConfirmModal}
+        onConfirm={handleConfirmDelete}
+      />
+      <AlertModal
+        isOpen={isAlertModalOpen}
+        onClose={handleCloseAlertModal}
+        message={alertMessage}
+      />
     </div>
   );
 }
