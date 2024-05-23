@@ -40,5 +40,47 @@ const StrDateItemWrapDiv = styled.div`
     overflow: hidden;
   }
 `;
+const NoExpenseDiv = styled.div`
+  text-align: center;
+  font-size: 16px;
+  color: #ccc;
+  padding: 20px;
+  background-color: rgb(249, 249, 249);
+  border-radius: 8px;
+`;
 
-export { StrDateItemWrapDiv, StrDiv, StrItemWrapDiv };
+const SelectWrapDiv = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+`;
+
+const Select = styled.select`
+  appearance: none;
+  padding: 8px 24px 8px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+  outline: none;
+`;
+
+const ArrowIcon = styled.span`
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  pointer-events: none;
+`;
+
+export {
+  ArrowIcon,
+  NoExpenseDiv,
+  Select,
+  SelectWrapDiv,
+  StrDateItemWrapDiv,
+  StrDiv,
+  StrItemWrapDiv,
+};

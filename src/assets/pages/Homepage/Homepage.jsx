@@ -1,3 +1,4 @@
+import ExpenseSummaryByMonth from "@components/ExpenseSummaryByMonth";
 import { useState } from "react";
 import styled from "styled-components";
 import ExpenseForm from "../../components/ExpenseForm";
@@ -25,6 +26,9 @@ function Homepage() {
       </StrSection>
       <StrSection>
         <MonthlyExpenses setFilterMonth={setFilterMonth} />
+      </StrSection>
+      <StrSection>
+        <ExpenseSummaryByMonth filterMonth={filterMonth} />
       </StrSection>
       <StrSection>
         <ExpenseListByMonth filterMonth={filterMonth} />

@@ -3,7 +3,7 @@
     "baseUrl": "src",
     "paths": {
       "@redux/*": ["redux/*"],
-      "@components/*": ["components/*"]
+      "@components/*": ["assets/components/*"]
     }
   },
   "include": ["src"]
