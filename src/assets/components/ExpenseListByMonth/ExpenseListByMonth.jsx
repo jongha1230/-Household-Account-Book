@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { ExpenseContext } from "../../../App";
+import { useExpense } from "../../contexts/expense.context";
 
 const StrDiv = styled.div`
   display: flex;
@@ -47,7 +47,7 @@ const StrDateItemText = styled.span`
 
 function ExpenseListByMonth({ filterMonth }) {
   const [filteredData, setFilteredData] = useState([]);
-  const { fetchedData } = useContext(ExpenseContext);
+  const { fetchedData } = useExpense();
   useEffect(() => {
     const filtered = fetchedData.filter((item) => {
       const month = new Date(item.date).getMonth();
