@@ -1,1 +1,1 @@
-export { default } from "./DateValidator";
+export { default } from "./dateValidator";
