@@ -13,7 +13,6 @@ export const loadFetchedData = createAsyncThunk(
       ...localData,
     ];
 
-    localStorage.setItem("dataItem", JSON.stringify(combinedData));
     return combinedData;
   }
 );
@@ -24,7 +23,6 @@ const fetchedDataSlice = createSlice({
   reducers: {
     addExpense: (state, action) => {
       state.push(action.payload);
-      localStorage.setItem("dataItem", JSON.stringify(state));
     },
     updateExpense: (state, action) => {
       const index = state.findIndex(
@@ -33,7 +31,6 @@ const fetchedDataSlice = createSlice({
 
       if (index !== -1) {
         state[index] = action.payload;
-        localStorage.setItem("dataItem", JSON.stringify(state));
       }
     },
     removeExpense: (state, action) => {
@@ -42,7 +39,6 @@ const fetchedDataSlice = createSlice({
       );
       if (index !== -1) {
         state.splice(index, 1);
-        localStorage.setItem("dataItem", JSON.stringify(state));
       }
     },
   },

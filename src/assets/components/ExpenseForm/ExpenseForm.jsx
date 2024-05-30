@@ -6,7 +6,8 @@ import { addExpense } from "@redux/slices/fetchedDataSlice";
 
 import { AlertModal } from "@components/Modal";
 import { closeAlertModal, openAlertModal } from "@redux/slices/modalSlice";
-import DateValidator from "../DateValidator";
+
+import dateValidator from "@components/dateValidator";
 import { StrForm } from "./ExpenseForm.styled";
 
 function ExpenseForm() {
@@ -40,9 +41,10 @@ function ExpenseForm() {
       dispatch(openAlertModal("입력창을 모두 작성해주세요."));
     }
     // 날짜 유효성 검사
-    const dateValidationError = DateValidator(date);
+    const dateValidationError = dateValidator(date);
     if (dateValidationError) {
       dispatch(openAlertModal(dateValidationError));
+      return;
     }
 
     const newExpense = {

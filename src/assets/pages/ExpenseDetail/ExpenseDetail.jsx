@@ -1,9 +1,10 @@
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-import DateValidator from "@components/DateValidator";
 import { AlertModal, ConfirmModal } from "@components/Modal";
+import dateValidator from "@components/dateValidator";
+import useExpenseDetail from "@components/hooks/useExpenseDetail";
 import { removeExpense, updateExpense } from "@redux/slices/fetchedDataSlice";
 import {
   closeAlertModal,
@@ -13,7 +14,9 @@ import {
 } from "@redux/slices/modalSlice";
 import { StrForm } from "./ExpenseDetail.styled";
 
-function ExpenseDetail({ expense }) {
+function ExpenseDetail() {
+  const { itemId } = useParams();
+  const expense = useExpenseDetail(itemId);
   const dateRef = useRef(null);
   const itemRef = useRef(null);
   const amountRef = useRef(null);
@@ -43,7 +46,7 @@ function ExpenseDetail({ expense }) {
       return;
     }
 
-    const dateValidationError = DateValidator(modifiedDate);
+    const dateValidationError = dateValidator(modifiedDate);
     if (dateValidationError) {
       dispatch(openAlertModal(dateValidationError));
       return;
@@ -66,6 +69,7 @@ function ExpenseDetail({ expense }) {
 
   const handleConfirmDelete = () => {
     dispatch(removeExpense(expense));
+    dispatch(closeConfirmModal());
     navigate("/");
   };
 

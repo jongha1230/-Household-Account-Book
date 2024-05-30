@@ -1,4 +1,4 @@
-const DateValidator = (date) => {
+const dateValidator = (date) => {
   const datePattern = date.split("-");
   const nowYear = new Date().getFullYear();
 
@@ -55,4 +55,4 @@ const DateValidator = (date) => {
   return null; // 유효성 검사 통과
 };
 
-export default DateValidator;
+export default dateValidator;

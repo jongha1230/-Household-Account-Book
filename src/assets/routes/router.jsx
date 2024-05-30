@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { ExpenseDetailWrapper } from "../pages/ExpenseDetail";
+import ExpenseDetail from "../pages/ExpenseDetail";
 import Homepage from "../pages/Homepage";
 
 const router = createBrowserRouter([
@@ -9,7 +9,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/expenses/:itemId",
-    element: <ExpenseDetailWrapper />,
+    element: <ExpenseDetail />,
   },
 ]);
 
