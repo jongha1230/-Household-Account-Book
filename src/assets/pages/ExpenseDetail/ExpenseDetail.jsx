@@ -1,7 +1,8 @@
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import DateValidator from "../../components/DateValidator";
+import useExpenseDetail from "../../../hooks/useExpenseDetail";
+import dateValidator from "../../components/dateValidator";
 
 const StrForm = styled.form`
   display: flex;
@@ -58,12 +59,16 @@ const StrBtn = styled.button`
   }
 `;
 
-function ExpenseDetail({ expense, updateExpense, removeExpense }) {
+function ExpenseDetail({ updateExpense, removeExpense }) {
+  const { itemId } = useParams();
+  const expense = useExpenseDetail(itemId);
   const dateRef = useRef(null);
   const itemRef = useRef(null);
   const amountRef = useRef(null);
   const descriptionRef = useRef(null);
   const navigate = useNavigate();
+
+  console.log(expense);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -83,7 +88,7 @@ function ExpenseDetail({ expense, updateExpense, removeExpense }) {
       return;
     }
 
-    const dateValidationError = DateValidator(modifiedDate);
+    const dateValidationError = dateValidator(modifiedDate);
     if (dateValidationError) {
       alert(dateValidationError);
       return;

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
-import DateValidator from "../DateValidator";
+import dateValidator from "../dateValidator";
 
 function ExpenseForm({ addExpense }) {
   const [date, setDate] = useState("");
@@ -18,7 +18,7 @@ function ExpenseForm({ addExpense }) {
       return;
     }
     // 날짜 유효성 검사
-    const dateValidationError = DateValidator(date);
+    const dateValidationError = dateValidator(date);
     if (dateValidationError) {
       alert(dateValidationError);
       return;

@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import GlobalStyle from "./GlobalStyle";
-import { ExpenseDetailWrapper } from "./assets/pages/ExpenseDetail";
+import ExpenseDetail from "./assets/pages/ExpenseDetail";
 import Homepage from "./assets/pages/Homepage";
 import fetchData from "./fetchData";
 // import router from "./assets/routes/router";
 
 function App() {
   const [fetchedData, setFetchedData] = useState([]);
-  console.log(fetchedData);
+
   useEffect(() => {
     const loadData = async () => {
       const fetchedData = await fetchData();
@@ -22,6 +22,7 @@ function App() {
         ...localData,
       ];
       setFetchedData(combinedData);
+      console.log(combinedData);
       localStorage.setItem("dataItem", JSON.stringify(combinedData));
     };
     loadData();
@@ -62,8 +63,7 @@ function App() {
           <Route
             path="/expenses/:itemId"
             element={
-              <ExpenseDetailWrapper
-                data={fetchedData}
+              <ExpenseDetail
                 updateExpense={updateExpense}
                 removeExpense={removeExpense}
               />
